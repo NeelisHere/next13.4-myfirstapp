@@ -8,7 +8,6 @@ import axios from "axios";
 const LoginPage = () => {
     const router = useRouter()
     const [user, setUser] = useState({
-        email: "",
         password: "",
         username: "",
     });
@@ -16,12 +15,24 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false)
 
     const onLogin = async () => {
-        
+        try {
+            setLoading(true)
+            const res = await axios.post('/api/users/login', user)
+            console.log('Login Success',res.data)
+            toast.success('Login Successful')
+            router.push('/profile')
+        } catch (error: any) {
+            console.log('registration failed', error.message)
+            toast.error(error.message);
+        } finally {
+            setLoading(false)
+        }
+
     };
 
     useEffect(()=>{
-        const { username, email, password } = user
-        if(email.length && password.length && username.length){
+        const { username, password } = user
+        if(password.length && username.length){
             setButtonDisabled(false)
         } else {
             setButtonDisabled(true)
@@ -36,7 +47,7 @@ const LoginPage = () => {
             <div className="flex flex-col border-solid border-2 border-indigo-600 p-4">
                 <label htmlFor="username">username</label>
                 <input
-                    className="p-2"
+                    className="p-2 text-black"
                     id="username"
                     type="text"
                     value={user.username}
@@ -48,7 +59,7 @@ const LoginPage = () => {
 
                 <label htmlFor="password">password</label>
                 <input
-                    className="p-2"
+                    className="text-black p-2"
                     id="password"
                     type="password"
                     value={user.password}
@@ -60,7 +71,8 @@ const LoginPage = () => {
 
                 <button
                     onClick={onLogin}
-                    className="bg-indigo-600 hover:bg-blue-700 text-white font-bold my-4 py-2 rounded w-full"
+                    disabled={buttonDisabled}
+                    className="disabled:opacity-50 bg-indigo-600 hover:bg-blue-700 text-white font-bold my-4 py-2 rounded w-full"
                 >
                     {
                         loading ?
