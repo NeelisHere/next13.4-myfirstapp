@@ -4,7 +4,7 @@ export default function UserProfile({ params }: any) {
             <h1 className="text-2xl font-bold p-2">PROFILE</h1>
             <hr />
             <div className="flex flex-col border-solid border-2 border-indigo-600 p-4">
-                <p>Profile page - {params.id}</p>
+                <p>{params.id}</p>
             </div>
             
         </div>
