@@ -8,49 +8,41 @@ import React, { useEffect, useState } from "react"
 function ResetPasswordPage() {
 
     const [loading, setLoading] = useState(false)
-    const [updatedPassword, setUpdatedPassword] = useState('')
+    const [email, setEmail] = useState('')
     const [buttonDisabled, setButtonDisabled] = useState(true)
 
     const handleClick = async () => {
-        // alert(updatedPassword)
         try {
             setLoading(true)
-            await axios.post('/api/users/resetpassword', { 
-                data: {
-                    updatedPassword,
-                    token: window.location.search.split('=')[1]
-                }
-            })
+            // alert(email)
+            await axios.post('/api/users/sendresetpasswordemail', { email })
         } catch (error: any) {
             console.log(error.response.data)
         } finally {
-            setUpdatedPassword('')
+            setEmail('')
             setLoading(false)
         }
     }
 
     useEffect(()=>{
-        if(updatedPassword.length > 0){
+        if(email.length > 0){
             setButtonDisabled(false)
         }else{
             setButtonDisabled(true)
         }
-        
-    }, [updatedPassword])
+    }, [email])
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen border-solid border-2 border-indigo-600 p-4">
-            <h1 className="text-2xl font-bold p-2">RESET PASSWORD</h1>
-            <hr />
             <div className="flex flex-col border-solid border-2 border-indigo-600 p-4 my-2">
-                <label className="p-1" htmlFor="updatedPassword">Enter new password:</label>
+                <label className="p-1">Enter email:</label>
                 <input
                     className="p-2 text-black rounded"
-                    type="password"
-                    placeholder="Enter new password"
-                    value={updatedPassword}
+                    type="email"
+                    placeholder="Enter email"
+                    value={email}
                     onChange={(e)=>{
-                        setUpdatedPassword(e.target.value);
+                        setEmail(e.target.value);
                     }}
                 />
 
@@ -68,7 +60,7 @@ function ResetPasswordPage() {
                             </svg>
                         </div>
                         :
-                        <>Update Password</>
+                        <>Send Email</>
                     }
                 </button>
             </div>

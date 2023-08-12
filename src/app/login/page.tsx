@@ -14,6 +14,7 @@ const LoginPage = () => {
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const [loading, setLoading] = useState(false)
 
+
     const onLogin = async () => {
         try {
             setLoading(true)
@@ -87,8 +88,12 @@ const LoginPage = () => {
                     }
                 </button>
                 <p>
+                    { "Forgot Password? " }
+                    <Link className="font-bold hover:underline" href={'/sendresetpasswordemail'}>Reset Password</Link>
+                </p>
+                <p>
                     { "Don't have an account? " }
-                    <Link className="underline" href={'/register'}>Register</Link>
+                    <Link className="font-bold hover:underline" href={'/register'}>Register</Link>
                 </p>
             </div>
             
